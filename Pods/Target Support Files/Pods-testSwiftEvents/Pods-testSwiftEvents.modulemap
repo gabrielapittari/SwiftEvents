@@ -1,0 +1,6 @@
+framework module Pods_testSwiftEvents {
+  umbrella header "Pods-testSwiftEvents-umbrella.h"
+
+  export *
+  module * { export * }
+}
