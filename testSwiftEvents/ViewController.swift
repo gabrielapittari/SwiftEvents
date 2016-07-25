@@ -125,6 +125,23 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         loadEvents(false)
     }
     
+    
+    func resizeImage(image: UIImage, newWidth: CGFloat) -> UIImage {
+        
+        let oldWidth = image.size.width
+        let scaleFactor = newWidth / oldWidth
+        
+        let newHeight = image.size.height * scaleFactor
+        let newWidth = oldWidth * scaleFactor
+        
+        UIGraphicsBeginImageContext(CGSizeMake(newWidth, newHeight))
+        image.drawInRect(CGRectMake(0, 0, newWidth, newHeight))
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return newImage
+    }
+    
     //MARK - TableView Delegate and Datasource
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -161,13 +178,15 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             logoImageView.image = UIImage.init(named: "default-placeholder")
             Alamofire.request(.GET, (self.events[indexPath.item].iconURL)).response { (request, response, data, error) in
                 if error == nil && data != nil {
-                    logoImageView.image = UIImage(data: data!, scale:1)
+                    let image: UIImage = self.resizeImage(UIImage(data: data!, scale:1)!, newWidth: logoImageView.image!.size.width)
+                    logoImageView.image = image
                 }
             }
             
         }
         return cell
     }
+    
     
     //MARK - PickerView Delegate and Datasource
     
