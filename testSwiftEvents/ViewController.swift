@@ -17,9 +17,10 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     @IBOutlet weak var acitivtyIndicator: UIActivityIndicatorView!
     @IBOutlet weak var cityPicker: UIPickerView!
     @IBOutlet weak var pickerView: UIView!
-    private var events: [Event]? = []
+    private var events: [Event] = []
     private let cities: [String] = ["New York", "Madrid", "London"]
     private var citySelected: String = ""
+    private var cityPaging: Int = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,23 +33,34 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         self.cityPicker.delegate = self
         
         self.setCity(cities[0])
-        self.loadEventsForPage("1")
+        self.loadEvents(true)
     }
     
     func setCity (city: String) {
         self.citySelected = city
+        self.cityPaging = 1
         self.cityButton.titleLabel?.text = city
     }
     
-    func loadEventsForPage(page: String) {
+    func loadEvents(deletePreviousData: Bool) {
         let qualityOfServiceClass = QOS_CLASS_BACKGROUND
         let backgroundQueue = dispatch_get_global_queue(qualityOfServiceClass, 0)
         self.showActivityIndicator()
         dispatch_async(backgroundQueue, {
-            
-            APIManager().getEvents(self.citySelected, page: page, success: { (response) in
+            var newEvents: [Event] = []
+            APIManager().getEvents(self.citySelected, page: "\(self.cityPaging)", success: { (response) in
+        
+                newEvents = self.modelJsonData(response)
+                if deletePreviousData == true {
+                    self.events = newEvents
+                } else {
+                    self.events += newEvents
+                }
                 
-                self.modelJsonData(response)
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    self.pickerView.hidden = true
+                    self.tableView.reloadData()
+                })
                 
                 }, failure: { (error) in
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
@@ -68,21 +80,14 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         self.pickerView.hidden = true
     }
     
-    func modelJsonData(json: [String: AnyObject]!) -> Any! {
+    func modelJsonData(json: [String: AnyObject]!) -> [Event] {
        
         guard let topEvents = TopEvents(json: json) else {
             print("Error initializing object")
-            return nil
+            return []
         }
-        self.events = topEvents.events
         
-        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-            
-            self.pickerView.hidden = true
-            self.tableView.reloadData()
-        })
-        
-        return nil
+        return topEvents.events!
     }
     
     func convertDateFormater(date: Date) -> String
@@ -115,6 +120,11 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         self.pickerView.hidden = false
     }
     
+    func addPagingAndLoadEvents () {
+        self.cityPaging += 1
+        loadEvents(false)
+    }
+    
     //MARK - TableView Delegate and Datasource
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -122,25 +132,34 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return events!.count;
+        return events.count;
+    }
+    
+    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        let currentOffset = scrollView.contentOffset.y;
+        let maximumOffset = scrollView.contentSize.height - scrollView.frame.size.height;
+        
+        if (maximumOffset - currentOffset <= -40) {
+            self.addPagingAndLoadEvents()
+        }
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell: UITableViewCell = self.tableView.dequeueReusableCellWithIdentifier("Cell")! as UITableViewCell
         
         if let nameLabel: UILabel = cell.viewWithTag(100) as? UILabel {
-            nameLabel.text = self.events?[indexPath.item].name
+            nameLabel.text = self.events[indexPath.item].name
         }
         
         if let dateLabel: UILabel = cell.viewWithTag(101) as? UILabel {
-            let startDate = convertDateFormater((self.events?[indexPath.item].start)!)
-            let endDate = convertDateFormater((self.events?[indexPath.item].end)!)
+            let startDate = convertDateFormater((self.events[indexPath.item].start)!)
+            let endDate = convertDateFormater((self.events[indexPath.item].end)!)
             dateLabel.text = "\(startDate) - \(endDate)"
         }
         
         if let logoImageView: UIImageView = cell.viewWithTag(102) as? UIImageView {
             logoImageView.image = UIImage.init(named: "default-placeholder")
-            Alamofire.request(.GET, (self.events?[indexPath.item].iconURL)!).response { (request, response, data, error) in
+            Alamofire.request(.GET, (self.events[indexPath.item].iconURL)).response { (request, response, data, error) in
                 if error == nil && data != nil {
                     logoImageView.image = UIImage(data: data!, scale:1)
                 }
@@ -167,7 +186,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         self.setCity(cities[row])
         self.pickerView.hidden = true
-        self.loadEventsForPage("1")
+        self.loadEvents(true)
     }
     
 }
