@@ -125,7 +125,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         loadEvents(false)
     }
     
-    
     func resizeImage(image: UIImage, newWidth: CGFloat) -> UIImage {
         
         let oldWidth = image.size.width
@@ -187,6 +186,17 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         return cell
     }
     
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+//        let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+//        let detailViewController = storyboard.instantiateViewControllerWithIdentifier("DetailViewController") as! DetailViewController
+         let detailViewController = self.storyboard?.instantiateViewControllerWithIdentifier("DetailViewController") as! DetailViewController
+      
+        detailViewController.event = self.events[indexPath.item]
+        self.presentViewController(detailViewController, animated: true, completion: nil)
+        
+        
+    }
     
     //MARK - PickerView Delegate and Datasource
     

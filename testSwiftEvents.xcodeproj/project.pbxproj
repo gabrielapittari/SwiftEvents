@@ -22,6 +22,7 @@
 		A26F859F1D4643560044C3AB /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A26F859D1D4643560044C3AB /* Alamofire.framework */; };
 		A26F85A01D4643560044C3AB /* Gloss.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A26F859E1D4643560044C3AB /* Gloss.framework */; };
 		A26F85A31D46439E0044C3AB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A26F85A11D46439E0044C3AB /* Main.storyboard */; };
+		A2A098CD1D477847009C931A /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2A098CC1D477847009C931A /* DetailViewController.swift */; };
 		A2A8B8D81D4259950060CDC9 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A2A8B8D61D4259950060CDC9 /* Alamofire.framework */; };
 		A2A8B8D91D4259950060CDC9 /* Gloss.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A2A8B8D71D4259950060CDC9 /* Gloss.framework */; };
 		BF9204AE1DC0EDEC828E6E97 /* Pods_testSwiftEvents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4737BBCDDED8FE8C6FA6B39E /* Pods_testSwiftEvents.framework */; };
@@ -70,6 +71,7 @@
 		A26F859D1D4643560044C3AB /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = "Pods/../build/Release-iphoneos/Alamofire/Alamofire.framework"; sourceTree = "<group>"; };
 		A26F859E1D4643560044C3AB /* Gloss.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Gloss.framework; path = "Pods/../build/Release-iphoneos/Gloss/Gloss.framework"; sourceTree = "<group>"; };
 		A26F85A21D46439E0044C3AB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = testSwiftEvents/Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		A2A098CC1D477847009C931A /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		A2A8B8D61D4259950060CDC9 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = "Pods/../build/Release-iphoneos/Alamofire/Alamofire.framework"; sourceTree = "<group>"; };
 		A2A8B8D71D4259950060CDC9 /* Gloss.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Gloss.framework; path = "Pods/../build/Release-iphoneos/Gloss/Gloss.framework"; sourceTree = "<group>"; };
 		D9DC66574A02B37C0B9413A5 /* Pods-testSwiftEvents.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-testSwiftEvents.release.xcconfig"; path = "Pods/Target Support Files/Pods-testSwiftEvents/Pods-testSwiftEvents.release.xcconfig"; sourceTree = "<group>"; };
@@ -162,6 +164,7 @@
 				A20FCA041D4128C500FD3D98 /* API */,
 				A212F8BA1D3E6E430024EB0D /* AppDelegate.swift */,
 				A212F8BC1D3E6E430024EB0D /* ViewController.swift */,
+				A2A098CC1D477847009C931A /* DetailViewController.swift */,
 				A212F8C11D3E6E430024EB0D /* Assets.xcassets */,
 				A26F85A11D46439E0044C3AB /* Main.storyboard */,
 				A212F8C31D3E6E430024EB0D /* LaunchScreen.storyboard */,
@@ -408,6 +411,7 @@
 				A212F97B1D40CFD10024EB0D /* Date.swift in Sources */,
 				A212F8E91D3E70900024EB0D /* Event.swift in Sources */,
 				A212F8BB1D3E6E430024EB0D /* AppDelegate.swift in Sources */,
+				A2A098CD1D477847009C931A /* DetailViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
