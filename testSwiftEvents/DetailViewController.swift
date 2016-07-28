@@ -17,13 +17,16 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var backButton: UIButton!
     @IBOutlet weak var eventImage: UIImageView!
     @IBOutlet weak var eventDescTextView: UITextView!
+    @IBOutlet weak var endDateLabel: UILabel!
+    @IBOutlet weak var startDateLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         print("\(event!.name)")
-        // Do any additional setup after loading the view.
+        titleLabel.text = event?.name
+        eventDescTextView.text = event?.description
+        
     }
-
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

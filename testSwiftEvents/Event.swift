@@ -11,6 +11,7 @@ import Gloss
 public struct Event: Decodable {
     
     public let name: String
+    public let description: String
     public let start: Date?
     public let end: Date?
     public let iconURL: String
@@ -20,6 +21,9 @@ public struct Event: Decodable {
     public init?(json: JSON) {
 
         guard let name: String = "name.text" <~~ json
+            else { return nil }
+        
+        guard let description: String = "description.text" <~~ json
             else { return nil }
         
         guard let start: Date = "start" <~~ json
@@ -35,6 +39,7 @@ public struct Event: Decodable {
             else { return nil }
         
         self.name = name
+        self.description = description
         self.start = start
         self.end = end
         self.iconURL = iconURL
